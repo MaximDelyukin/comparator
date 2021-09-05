@@ -1,4 +1,4 @@
-import { DetailedItem } from "./DetailedItem";
+import { ProductItemDetails } from "./ProductItemDetails";
 
 interface IDetailedListProps {
     items: any[];
@@ -9,7 +9,7 @@ interface IDetailedListProps {
 
 export const DetailedItemsList = ({ items, getClassName, onDeleteClick, sortedFeatures }: IDetailedListProps) => {
     return <ul className="detailedItemsList">
-        {items.map((item: any) => (<DetailedItem
+        {items.map((item: any) => (<ProductItemDetails
             item={item}
             sortedFeatures={sortedFeatures}
             getClassName={getClassName}

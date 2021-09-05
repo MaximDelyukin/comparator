@@ -30,7 +30,7 @@ export const Main = ({ }: IMainProps) => {
         'Hardheid',
         'Artikelnummer',
         'stepQuantity',
-        // 'badges',
+        'badges',
         'Kleur',
         'Temperatuurgebied',
         'Materiaal',

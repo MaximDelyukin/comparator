@@ -42,3 +42,9 @@ code {
 .featuresToCompareTitlesListWrap {
   width: 20%;
 }
+
+.badgesWrap {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
