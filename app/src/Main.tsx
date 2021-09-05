@@ -1,6 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { ThemeContext } from 'styled-components';
-import { isNullOrUndefined } from 'util';
 import { ComparedtemsList } from './ComparedItemsList';
 import { DetailedItemsList } from './DetailedItemsList';
 import { FeaturesToCompareTitlesList } from './FeaturesToCompareTitlesList';
@@ -24,11 +23,14 @@ export const Main = ({ }: IMainProps) => {
         'Inwendige diameter'
     ];
 
-    const detailedItems = productsMock;
+    const [detailedItems, setDetailedItems] = useState<any[]>(productsMock);
 
     const getFieldsWhichAreDifferent = (source: any[]) => {
-        debugger;
         let res: any[] = [];
+        if (source.length === 0) {
+            return res;
+        }
+
         const sampleItem = source[0];
 
         const fieldNames = Object.keys(sampleItem);
@@ -77,7 +79,6 @@ export const Main = ({ }: IMainProps) => {
     // ];
 
     const fieldsWhichAreDifferent = getFieldsWhichAreDifferent(detailedItems);
-    console.log('fieldsWhichAreDifferent', fieldsWhichAreDifferent);
 
     const getClassNameForDetailedItemsList = (field: string): string => {
         let res = '';
@@ -89,17 +90,27 @@ export const Main = ({ }: IMainProps) => {
         return res;
     };
 
+    const handleDeleteClick = (id: string) => {
+        setDetailedItems((prevDetailedItems: any[]) => {
+            return prevDetailedItems.filter((detailedItem: any) => {
+                return detailedItem['sku'] !== id;
+            } );
+        } );
+    };//TODO: useCallback
+
     return <div>
         <div>
             <ComparedtemsList items={[{ id: 0 }, { id: 1 }, { id: 2 }]} />
         </div>
-        <div className="featuresDetailedItemsListWrap">
-            <div className="featuresToCompareTitlesListWrap">
-                <FeaturesToCompareTitlesList getClassName={getClassNameForDetailedItemsList} features={features} />
+        {detailedItems.length > 0 && 
+            <div className="featuresDetailedItemsListWrap">
+                <div className="featuresToCompareTitlesListWrap">
+                    <FeaturesToCompareTitlesList getClassName={getClassNameForDetailedItemsList} features={features} />
+                </div>
+                <div>
+                    <DetailedItemsList onDeleteClick={handleDeleteClick} getClassName={getClassNameForDetailedItemsList} items={detailedItems} />
+                </div>
             </div>
-            <div>
-                <DetailedItemsList getClassName={getClassNameForDetailedItemsList} items={detailedItems} />
-            </div>
-        </div>
+        }
     </div>;
 };

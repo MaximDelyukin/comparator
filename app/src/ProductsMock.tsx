@@ -109,7 +109,7 @@ export const productsMock = [
         "sku": "115576",
         "Snoerdikte": "1.78",
         "Inwendige diameter": "2.9",
-        "Maat volgens AS568": "6",
+        "Maat volgens AS568": "102",
         "listPrice": "0.66",
         "channel": "nl_NL",
         "display": true,

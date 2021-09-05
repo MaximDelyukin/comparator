@@ -9,6 +9,8 @@ import './App.css';
 //TODO: fix any types
 //TODO: unit tests for getClassName and other utility methods
 //TODO: comment every step of getFieldsWhichAreDifferent
+//TODO: refactor DeleteButton to export styled(DeleteButton)
+//TODO: refactor DeleteButton to have reference transparency
 import { ThemeProvider } from 'styled-components';
 import { Main } from './Main';
 import { defaultTheme } from './ThemeProvider';
