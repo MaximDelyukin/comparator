@@ -4,8 +4,11 @@ import './App.css';
 //TODO: implement delete button icon
 //TODO: remove HC in DetailedItem
 //TODO: refactor DetailedItems list and DetailedItem to not pass getClassName twice
-//TODO: store implementation of getClassNameForDetailedItemsList in utils or in DetailedItem and import it from there
+//TODO: store implementation of getClassNameForDetailedItemsList, getFieldsWhichAreDifferent in utils or in DetailedItem and import it from there and remove closure dependancies
 //TODO: smth > meaningful for getClassNameForDetailedItemsList and getClassName
+//TODO: fix any types
+//TODO: unit tests for getClassName and other utility methods
+//TODO: comment every step of getFieldsWhichAreDifferent
 import { ThemeProvider } from 'styled-components';
 import { Main } from './Main';
 import { defaultTheme } from './ThemeProvider';
