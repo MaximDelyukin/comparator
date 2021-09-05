@@ -1,5 +1,9 @@
-export const DetailedItem = () => {
+interface IDetailedItemsProps {
+    item: any;
+}
+
+export const DetailedItem = ({ item }: IDetailedItemsProps) => {
     return <div>
-        'detailed item'
+        {item.id}
     </div>;
 };
