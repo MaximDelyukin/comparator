@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { ThemeContext } from 'styled-components';
-import { ComparedtemsList } from './ComparedItemsList';
+import { ComparedItemsList } from './ComparedItemsList';
 import { DetailedItemsList } from './DetailedItemsList';
 import { FeaturesToCompareTitlesList } from './FeaturesToCompareTitlesList';
 import { productsMock } from "./ProductsMock";
@@ -13,6 +13,13 @@ export const Main = ({ }: IMainProps) => {
     const themeContext = useContext(ThemeContext);
 
     const { spacingBase } = themeContext;
+
+    const [detailedItems, setDetailedItems] = useState<any[]>(productsMock);
+    const [selectedItems, setSetSelectedItems] = useState<string[]>(() => {
+        return productsMock.map((product: any) => {
+            return product['sku'];//TODO: specify identifier globally and import
+        })
+    });
     
     const features: string[] = [
         'Maat volgens AS568',
@@ -23,7 +30,7 @@ export const Main = ({ }: IMainProps) => {
         'Inwendige diameter'
     ];
 
-    const [detailedItems, setDetailedItems] = useState<any[]>(productsMock);
+    
 
     const getFieldsWhichAreDifferent = (source: any[]) => {
         let res: any[] = [];
@@ -98,9 +105,34 @@ export const Main = ({ }: IMainProps) => {
         } );
     };//TODO: useCallback
 
+    const isSelectedItemChecked = (id: string) => {
+        return selectedItems.indexOf(id) !== -1;
+    };
+
+    const handleSelectedItemChanged = (id: string, checked: boolean) => {
+        setSetSelectedItems((prevSelectedItems: string[]) => {
+            if (checked) {
+                const newSelectedItems = [...prevSelectedItems];
+                newSelectedItems.push(id);
+
+                return newSelectedItems;
+            }
+
+            const newSelectedItems = [...prevSelectedItems];
+            const index = newSelectedItems.indexOf(id);//TODO: add check for -1
+            newSelectedItems.splice(index, 1);
+
+            return newSelectedItems;
+        })
+    };
+
     return <div>
         <div>
-            <ComparedtemsList items={[{ id: 0 }, { id: 1 }, { id: 2 }]} />
+            <ComparedItemsList
+                items={detailedItems}
+                onSelectedItemChanged={handleSelectedItemChanged}
+                isChecked={isSelectedItemChecked}
+            />
         </div>
         {detailedItems.length > 0 && 
             <div className="featuresDetailedItemsListWrap">

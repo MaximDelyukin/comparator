@@ -1,14 +1,21 @@
 import { ComparedItem } from "./ComparedItem";
 
-interface IComparedListProps {
+interface IComparedItemsListProps {
     items: any[];
+    onSelectedItemChanged: (id: string, checked: boolean) => void;
+    isChecked: (id: string) => boolean;
 }
 
-export const ComparedtemsList = ({ items }: IComparedListProps) => {
+export const ComparedItemsList = ({ items, onSelectedItemChanged, isChecked }: IComparedItemsListProps) => {
     return <div>
         'You selected'
         <ul>
-            {items.map((_item: any) => (<ComparedItem key={_item.id} />))}
+            {items.map((item: any) => (<ComparedItem
+                key={item.sku}
+                item={item}
+                onSelectedItemChanged={onSelectedItemChanged}
+                isChecked={isChecked(item.sku)}
+            />))}
         </ul>
     </div>;
 };
