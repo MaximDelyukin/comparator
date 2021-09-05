@@ -11,6 +11,7 @@ import './App.css';
 //TODO: comment every step of getFieldsWhichAreDifferent
 //TODO: refactor DeleteButton to export styled(DeleteButton)
 //TODO: refactor DeleteButton to have reference transparency
+//TODO how to type check that certain component can render a specific component or typecheck renderProps
 import { ThemeProvider } from 'styled-components';
 import { Main } from './Main';
 import { defaultTheme } from './ThemeProvider';

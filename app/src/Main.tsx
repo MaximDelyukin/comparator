@@ -9,7 +9,8 @@ interface IMainProps {
 
 };
 
-//TODO: add comment about useReducer instead of useState - but for this case for simplicity I used useState
+/*//TODO: add comment about useReducer instead of useState - but for this case for simplicity I used useState
+or useReducer */
 
 export const Main = ({ }: IMainProps) => {
     const themeContext = useContext(ThemeContext);
@@ -23,15 +24,25 @@ export const Main = ({ }: IMainProps) => {
         })
     });
     
+    //TODO: get features dynamically or put comment why did you hardcode that - no business context
     const features: string[] = [
-        'Maat volgens AS568',
+        'Toepassing',
         'Hardheid',
-        'Snoerdikte',
+        'Artikelnummer',
+        'stepQuantity',
+        // 'badges',
         'Kleur',
+        'Temperatuurgebied',
         'Materiaal',
-        'Inwendige diameter'
+        'Snoerdikte',
+        'Inwendige diameter',
+        'Maat volgens AS568'
     ];
 
+    //TODO: isCalled twice - save in a variable
+    const getSortedFeatures = (featureSource: string[]) => {
+        return features.sort();
+    };
     
 
     const getFieldsWhichAreDifferent = (source: any[]) => {
@@ -94,8 +105,6 @@ export const Main = ({ }: IMainProps) => {
     };
 
     const fieldsWhichAreDifferent = getFieldsWhichAreDifferent(getDetailedItemsList(detailedItems));
-    
-    console.log('fieldsWhichAreDifferent', fieldsWhichAreDifferent);
 
     const getClassNameForDetailedItemsList = (field: string): string => {
         let res = '';
@@ -149,14 +158,15 @@ export const Main = ({ }: IMainProps) => {
                 <div className="featuresToCompareTitlesListWrap">
                     <FeaturesToCompareTitlesList
                         getClassName={getClassNameForDetailedItemsList}
-                        features={features}
+                        features={getSortedFeatures(features)}
                     />
                 </div>
                 <div>
                     <DetailedItemsList
-                        onDeleteClick={handleDeleteClick}
-                        getClassName={getClassNameForDetailedItemsList}
                         items={getDetailedItemsList(detailedItems)}
+                        sortedFeatures={getSortedFeatures(features)}
+                        getClassName={getClassNameForDetailedItemsList}
+                        onDeleteClick={handleDeleteClick}
                     />
                 </div>
             </div>
