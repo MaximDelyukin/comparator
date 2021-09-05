@@ -13,6 +13,21 @@ code {
 }
 
 
+.detailedItemsList {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+}
+
+.differenceHighLight {
+  background-color: #ccc;
+}
+
+.detailedItemsList > li {
+  padding-right: 1em;
+}
+
 .featuresTitlesList {
   list-style: none;
   text-align: left;

@@ -2,7 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 
 //TODO: implement delete button icon
-//TODO: refactor default context to not use defaultTHeme 2 times
+//TODO: remove HC in DetailedItem
+//TODO: refactor DetailedItems list and DetailedItem to not pass getClassName twice
+//TODO: store implementation of getClassNameForDetailedItemsList in utils or in DetailedItem and import it from there
+//TODO: smth > meaningful for getClassNameForDetailedItemsList and getClassName
 import { ThemeProvider } from 'styled-components';
 import { Main } from './Main';
 import { defaultTheme } from './ThemeProvider';
