@@ -9,6 +9,8 @@ interface IMainProps {
 
 };
 
+//TODO: add comment about useReducer instead of useState - but for this case for simplicity I used useState
+
 export const Main = ({ }: IMainProps) => {
     const themeContext = useContext(ThemeContext);
 
@@ -85,7 +87,15 @@ export const Main = ({ }: IMainProps) => {
     //     'Hardheid', 'Kleur'
     // ];
 
-    const fieldsWhichAreDifferent = getFieldsWhichAreDifferent(detailedItems);
+    const getDetailedItemsList = (items: any[]) => {
+        return items.filter((item: any) => {
+            return selectedItems.indexOf(item['sku']) !== -1;
+        } );
+    };
+
+    const fieldsWhichAreDifferent = getFieldsWhichAreDifferent(getDetailedItemsList(detailedItems));
+    
+    console.log('fieldsWhichAreDifferent', fieldsWhichAreDifferent);
 
     const getClassNameForDetailedItemsList = (field: string): string => {
         let res = '';
@@ -137,10 +147,17 @@ export const Main = ({ }: IMainProps) => {
         {detailedItems.length > 0 && 
             <div className="featuresDetailedItemsListWrap">
                 <div className="featuresToCompareTitlesListWrap">
-                    <FeaturesToCompareTitlesList getClassName={getClassNameForDetailedItemsList} features={features} />
+                    <FeaturesToCompareTitlesList
+                        getClassName={getClassNameForDetailedItemsList}
+                        features={features}
+                    />
                 </div>
                 <div>
-                    <DetailedItemsList onDeleteClick={handleDeleteClick} getClassName={getClassNameForDetailedItemsList} items={detailedItems} />
+                    <DetailedItemsList
+                        onDeleteClick={handleDeleteClick}
+                        getClassName={getClassNameForDetailedItemsList}
+                        items={getDetailedItemsList(detailedItems)}
+                    />
                 </div>
             </div>
         }
