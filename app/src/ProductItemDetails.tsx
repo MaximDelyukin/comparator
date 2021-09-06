@@ -20,22 +20,23 @@ export const ProductItemDetails = ({ item, getClassName, onDeleteClick, sortedFe
                 Delete
             </DeleteButton>
         </div>
-        <div>
+        <div className="mainProductInfoWrap">
             <div className="productImageWrap">
-                <img src={item['productImage']} onError={addDefaultSrc} />
+                <img src={item['productImage']} onError={addDefaultSrc} alt="" />
             </div>
-            <div>
-                {item['name']}
+            <div className="productTitleWrap">
+                <b>{item['name']}</b>
             </div>
-            <div>
-                {item['salePrice']}
+            <div className="salePriceWrap">
+                <b>{item['salePrice']}</b>
+                <div>per stuk / excl. btw</div>
             </div>
         </div>
         <div>
             <ul className='badgesWrap'>
             {badgeUrls.map((badgeUrl: string, index: number) => {
                 return <li key={index}>
-                    <img src={badgeUrl} />
+                    <img src={badgeUrl} alt="" />
                 </li>
             })}
             </ul>
@@ -44,7 +45,7 @@ export const ProductItemDetails = ({ item, getClassName, onDeleteClick, sortedFe
             {sortedFeatures
             .filter( (feature: string) => (feature !== 'badges') )
             .map((feature: string) => {
-                return <div className={getClassName(feature)}>
+                return <div className={getClassName(feature)} key={feature}>
                     {item[feature]}
                 </div>;
             })}

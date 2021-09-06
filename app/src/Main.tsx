@@ -1,22 +1,14 @@
-import { useContext, useState } from 'react';
-import { ThemeContext } from 'styled-components';
+import { useState } from 'react';
 import { ComparedItemsList } from './ComparedItemsList';
 import { DetailedItemsList } from './DetailedItemsList';
 import { FeaturesToCompareTitlesList } from './FeaturesToCompareTitlesList';
 import { productsMock } from "./ProductsMock";
 
-interface IMainProps {
-
-};
 
 /*//TODO: add comment about useReducer instead of useState - but for this case for simplicity I used useState
 or useReducer */
 
-export const Main = ({ }: IMainProps) => {
-    const themeContext = useContext(ThemeContext);
-
-    const { spacingBase } = themeContext;
-
+export const Main = () => {
     const [detailedItems, setDetailedItems] = useState<any[]>(productsMock);
     const [selectedItems, setSetSelectedItems] = useState<string[]>(() => {
         return productsMock.map((product: any) => {
