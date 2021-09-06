@@ -48,3 +48,16 @@ code {
   flex-direction: row;
   list-style: none;
 }
+
+.productImageWrap {
+  height: 9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 0;
+}
+
+.productImageWrap img {
+  max-height: 9em;
+  max-width: 9em;
+}

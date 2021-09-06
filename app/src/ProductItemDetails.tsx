@@ -1,4 +1,6 @@
 import { DeleteButton } from "./DeleteButton";
+import { addDefaultSrc } from './utils';
+
 //TODO: rename to ItemDetails or ProductItemDetails
 interface IProductItemDetails {
     item: any;
@@ -17,8 +19,8 @@ export const ProductItemDetails = ({ item, getClassName, onDeleteClick, sortedFe
             Delete
         </DeleteButton>
         <div>
-            <div>
-                <img src={item['productImage']} />
+            <div className="productImageWrap">
+                <img src={item['productImage']} onError={addDefaultSrc} />
             </div>
             <div>
                 {item['name']}
