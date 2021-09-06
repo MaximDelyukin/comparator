@@ -14,7 +14,7 @@ export const ProductItemDetails = ({ item, getClassName, onDeleteClick, sortedFe
     const badgesString = item['badges'];
     const badgeUrls = badgesString.split('|');//TODO: check whether it makes sense to sanitize JSON input
 
-    return <li>
+    return <li className="productDetailsItem">
         <div className="deleteButtonWrap">
             <DeleteButton onDeleteClick={() => { onDeleteClick(item['sku']) }}>
                 Delete

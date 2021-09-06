@@ -114,13 +114,13 @@ code {
   padding-bottom: 1em;
 }
 
-.iconDeleteButton {
+.iconButtonDelete {
   border: none;
   background: none;
   outline: none;
   cursor: pointer;
 }
 
-.iconDeleteButton svg {
+.iconButtonDelete svg {
   fill: rgb(4, 81, 174);
 }
