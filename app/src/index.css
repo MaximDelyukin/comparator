@@ -45,6 +45,9 @@ code {
   width: 80%;
 }
 
+/* fix ie 11 flex-box extra stretch */
+.featuresDetailedItemsListWrap > div {min-width: 1px;}
+
 .selectedItemsTitleWrap {
   color: rgb(4, 81, 174);
 }
