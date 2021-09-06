@@ -15,9 +15,11 @@ export const ProductItemDetails = ({ item, getClassName, onDeleteClick, sortedFe
     const badgeUrls = badgesString.split('|');//TODO: check whether it makes sense to sanitize JSON input
 
     return <li>
-        <DeleteButton onDeleteClick={() => { onDeleteClick(item['sku']) }}>
-            Delete
-        </DeleteButton>
+        <div className="deleteButtonWrap">
+            <DeleteButton onDeleteClick={() => { onDeleteClick(item['sku']) }}>
+                Delete
+            </DeleteButton>
+        </div>
         <div>
             <div className="productImageWrap">
                 <img src={item['productImage']} onError={addDefaultSrc} />
@@ -29,13 +31,15 @@ export const ProductItemDetails = ({ item, getClassName, onDeleteClick, sortedFe
                 {item['salePrice']}
             </div>
         </div>
-        <ul className='badgesWrap'>
+        <div>
+            <ul className='badgesWrap'>
             {badgeUrls.map((badgeUrl: string, index: number) => {
                 return <li key={index}>
                     <img src={badgeUrl} />
                 </li>
             })}
-        </ul>
+            </ul>
+        </div>
         <div>
             {sortedFeatures
             .filter( (feature: string) => (feature !== 'badges') )

@@ -7,9 +7,9 @@ interface IComparedItemsListProps {
 }
 
 export const ComparedItemsList = ({ items, onSelectedItemChanged, isChecked }: IComparedItemsListProps) => {
-    return <div>
-        'You selected'
-        <ul>
+    return <div className="selectedItemsContentWrap">
+        <b className="selectedItemsTitleWrap">You selected</b>
+        <ul className="selectedItemsList">
             {items.map((item: any) => (<ComparedItem
                 key={item.sku}
                 item={item}

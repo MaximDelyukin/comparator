@@ -30,7 +30,6 @@ export const Main = ({ }: IMainProps) => {
         'Hardheid',
         'Artikelnummer',
         'stepQuantity',
-        'badges',
         'Kleur',
         'Temperatuurgebied',
         'Materiaal',
@@ -41,7 +40,7 @@ export const Main = ({ }: IMainProps) => {
 
     //TODO: isCalled twice - save in a variable
     const getSortedFeatures = (featureSource: string[]) => {
-        return features.sort();
+        return featureSource.sort();
     };
     
 
@@ -145,22 +144,22 @@ export const Main = ({ }: IMainProps) => {
         })
     };
 
-    return <div>
-        <div>
+    return <div className="mainWrap">
+        <div className="comparedItemsListWrap">
             <ComparedItemsList
                 items={detailedItems}
                 onSelectedItemChanged={handleSelectedItemChanged}
                 isChecked={isSelectedItemChecked}
             />
+            <div className="featuresToCompareTitlesListWrap">
+                <FeaturesToCompareTitlesList
+                    getClassName={getClassNameForDetailedItemsList}
+                    features={getSortedFeatures(features)}
+                />
+            </div>
         </div>
         {detailedItems.length > 0 && 
             <div className="featuresDetailedItemsListWrap">
-                <div className="featuresToCompareTitlesListWrap">
-                    <FeaturesToCompareTitlesList
-                        getClassName={getClassNameForDetailedItemsList}
-                        features={getSortedFeatures(features)}
-                    />
-                </div>
                 <div>
                     <DetailedItemsList
                         items={getDetailedItemsList(detailedItems)}

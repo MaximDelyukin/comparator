@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: 1em;
 }
 
 code {
@@ -18,35 +19,49 @@ code {
   display: flex;
   flex-direction: row;
   text-align: left;
+  padding: 0;
 }
 
 .differenceHighLight {
   background-color: #ccc;
 }
 
-.detailedItemsList > li {
-  padding-right: 1em;
-}
-
 .featuresTitlesList {
   list-style: none;
   text-align: left;
   font-weight: bold;
+  /* in media query for other width this should be normal */
+  white-space: nowrap;
+  padding: 0;
+}
+
+.selectedItemsList {
+  padding: 0;
 }
 
 .featuresDetailedItemsListWrap {
   display: flex;
   align-items: flex-end;
+  width: 80%;
 }
 
-.featuresToCompareTitlesListWrap {
-  width: 20%;
+.selectedItemsTitleWrap {
+  color: rgb(4, 81, 174);
+}
+
+.mainWrap {
+  display: flex;
+  flex-direction: row;
 }
 
 .badgesWrap {
   display: flex;
   flex-direction: row;
   list-style: none;
+  height: 3em;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0;
 }
 
 .productImageWrap {
@@ -60,4 +75,26 @@ code {
 .productImageWrap img {
   max-height: 9em;
   max-width: 9em;
+}
+
+.badges-title-wrap {
+  display: flex;
+  align-items: flex-end;
+  height: 3em;/*use vars here*/
+}
+
+.comparedItemsListWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20%;
+}
+
+.selectedItemsContentWrap {
+  padding-right: 1em;
+}
+
+.deleteButtonWrap {
+  padding-right: 1em;
+  text-align: right;
 }
