@@ -3,36 +3,19 @@ import { ComparedItemsList } from './ComparedItemsList';
 import { DetailedItemsList } from './DetailedItemsList';
 import { FeaturesToCompareTitlesList } from './FeaturesToCompareTitlesList';
 import { getProducts } from "./ProductsData";
-
-//TODO: move features to external module for better testability and less hardcode
-/*//TODO: add comment about useReducer instead of useState - but for this case for simplicity I used useState
-or useReducer */
+import { CONSTANTS } from './utils';
 
 export const Main = () => {
     const products = getProducts();
+    const features = CONSTANTS.FEATURES;
 
     const [detailedItems, setDetailedItems] = useState<any[]>(products);
     const [selectedItems, setSetSelectedItems] = useState<string[]>(() => {
         return products.map((product: any) => {
-            return product['sku'];//TODO: specify identifier globally and import
+            return product[CONSTANTS.ID_KEY];
         })
     });
     
-    //TODO: get features dynamically or put comment why did you hardcode that - no business context
-    const features: string[] = [
-        'Toepassing',
-        'Hardheid',
-        'Artikelnummer',
-        'stepQuantity',
-        'Kleur',
-        'Temperatuurgebied',
-        'Materiaal',
-        'Snoerdikte',
-        'Inwendige diameter',
-        'Maat volgens AS568'
-    ];
-
-    //TODO: isCalled twice - save in a variable
     const getSortedFeatures = (featureSource: string[]) => {
         return featureSource.sort();
     };
@@ -89,7 +72,7 @@ export const Main = () => {
 
     const getDetailedItemsList = (items: any[]) => {
         return items.filter((item: any) => {
-            return selectedItems.indexOf(item['sku']) !== -1;
+            return selectedItems.indexOf(item[CONSTANTS.ID_KEY]) !== -1;
         } );
     };
 
@@ -108,10 +91,10 @@ export const Main = () => {
     const handleDeleteClick = (id: string) => {
         setDetailedItems((prevDetailedItems: any[]) => {
             return prevDetailedItems.filter((detailedItem: any) => {
-                return detailedItem['sku'] !== id;
+                return detailedItem[CONSTANTS.ID_KEY] !== id;
             } );
         } );
-    };//TODO: useCallback
+    };
 
     const isSelectedItemChecked = (id: string) => {
         return selectedItems.indexOf(id) !== -1;
@@ -127,7 +110,7 @@ export const Main = () => {
             }
 
             const newSelectedItems = [...prevSelectedItems];
-            const index = newSelectedItems.indexOf(id);//TODO: add check for -1
+            const index = newSelectedItems.indexOf(id);
             newSelectedItems.splice(index, 1);
 
             return newSelectedItems;

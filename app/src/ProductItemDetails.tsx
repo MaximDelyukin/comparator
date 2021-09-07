@@ -1,7 +1,6 @@
 import { DeleteButton } from "./DeleteButton";
-import { addDefaultSrc } from './utils';
+import { addDefaultSrc, CONSTANTS } from './utils';
 
-//TODO: rename to ItemDetails or ProductItemDetails
 interface IProductItemDetails {
     item: any;
     getClassName: (field: string) => string;
@@ -10,13 +9,12 @@ interface IProductItemDetails {
 }
 
 export const ProductItemDetails = ({ item, getClassName, onDeleteClick, sortedFeatures }: IProductItemDetails) => {
-    //TODO: add try catch block
     const badgesString = item['badges'];
-    const badgeUrls = badgesString.split('|');//TODO: check whether it makes sense to sanitize JSON input
+    const badgeUrls = badgesString.split('|');
 
     return <li className="productDetailsItem">
         <div className="deleteButtonWrap">
-            <DeleteButton onDeleteClick={() => { onDeleteClick(item['sku']) }}>
+            <DeleteButton onDeleteClick={() => { onDeleteClick(item[CONSTANTS.ID_KEY]) }}>
                 Delete
             </DeleteButton>
         </div>

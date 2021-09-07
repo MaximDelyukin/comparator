@@ -1,4 +1,6 @@
 import React from "react";
+import { CONSTANTS } from './utils';
+
 
 interface IComparedItemProps {
     item: any;
@@ -10,7 +12,7 @@ export const ComparedItem = ({item, onSelectedItemChanged, isChecked }: ICompare
     return <li>
         <div>
             <label>
-                <input type='checkbox' onChange={(event: React.ChangeEvent<HTMLInputElement>) => { onSelectedItemChanged(item['sku'], event.currentTarget.checked) }} checked={isChecked} />
+                <input type='checkbox' onChange={(event: React.ChangeEvent<HTMLInputElement>) => { onSelectedItemChanged(item[CONSTANTS.ID_KEY], event.currentTarget.checked) }} checked={isChecked} />
                 {item.name}
             </label>
         </div>

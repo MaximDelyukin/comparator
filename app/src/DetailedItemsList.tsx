@@ -1,4 +1,5 @@
 import { ProductItemDetails } from "./ProductItemDetails";
+import { CONSTANTS } from "./utils";
 
 interface IDetailedListProps {
     items: any[];
@@ -14,7 +15,7 @@ export const DetailedItemsList = ({ items, getClassName, onDeleteClick, sortedFe
             sortedFeatures={sortedFeatures}
             getClassName={getClassName}
             onDeleteClick={onDeleteClick}
-            key={item['sku']}
+            key={item[CONSTANTS.ID_KEY]}
         />))}
     </ul>;
 };

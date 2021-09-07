@@ -6,3 +6,19 @@ export const addDefaultSrc = (e: React.SyntheticEvent<HTMLImageElement, Event>) 
     const noImgUrl = defaultImgSrc;
     e.currentTarget.src = noImgUrl;
 }
+
+export const CONSTANTS = {
+    ID_KEY: 'sku',
+    FEATURES: [
+        'Toepassing',
+        'Hardheid',
+        'Artikelnummer',
+        'stepQuantity',
+        'Kleur',
+        'Temperatuurgebied',
+        'Materiaal',
+        'Snoerdikte',
+        'Inwendige diameter',
+        'Maat volgens AS568'
+    ]
+};
