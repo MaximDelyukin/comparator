@@ -9,8 +9,8 @@ import { getProducts } from "./ProductsData";
 or useReducer */
 
 export const Main = () => {
-    const products = getProducts();//mock
-    
+    const products = getProducts();
+
     const [detailedItems, setDetailedItems] = useState<any[]>(products);
     const [selectedItems, setSetSelectedItems] = useState<string[]>(() => {
         return products.map((product: any) => {
@@ -87,10 +87,6 @@ export const Main = () => {
         return res;
     };
 
-    // const fieldsWhichAreDifferent = [
-    //     'Hardheid', 'Kleur'
-    // ];
-
     const getDetailedItemsList = (items: any[]) => {
         return items.filter((item: any) => {
             return selectedItems.indexOf(item['sku']) !== -1;
@@ -139,30 +135,33 @@ export const Main = () => {
     };
 
     return <div className="mainWrap">
-        <div className="comparedItemsListWrap">
-            <ComparedItemsList
-                items={detailedItems}
-                onSelectedItemChanged={handleSelectedItemChanged}
-                isChecked={isSelectedItemChecked}
-            />
-            <div className="featuresToCompareTitlesListWrap">
-                <FeaturesToCompareTitlesList
-                    getClassName={getClassNameForDetailedItemsList}
-                    features={getSortedFeatures(features)}
+        <h1>{detailedItems.length} products compared</h1>
+        <div className="mainContentWrap">
+            <div className="comparedItemsListWrap">
+                <ComparedItemsList
+                    items={detailedItems}
+                    onSelectedItemChanged={handleSelectedItemChanged}
+                    isChecked={isSelectedItemChecked}
                 />
-            </div>
-        </div>
-        {detailedItems.length > 0 && 
-            <div className="featuresDetailedItemsListWrap">
-                <div>
-                    <DetailedItemsList
-                        items={getDetailedItemsList(detailedItems)}
-                        sortedFeatures={getSortedFeatures(features)}
+                <div className="featuresToCompareTitlesListWrap">
+                    <FeaturesToCompareTitlesList
                         getClassName={getClassNameForDetailedItemsList}
-                        onDeleteClick={handleDeleteClick}
+                        features={getSortedFeatures(features)}
                     />
                 </div>
             </div>
-        }
+            {detailedItems.length > 0 && 
+                <div className="featuresDetailedItemsListWrap">
+                    <div>
+                        <DetailedItemsList
+                            items={getDetailedItemsList(detailedItems)}
+                            sortedFeatures={getSortedFeatures(features)}
+                            getClassName={getClassNameForDetailedItemsList}
+                            onDeleteClick={handleDeleteClick}
+                        />
+                    </div>
+                </div>
+            }
+        </div>
     </div>;
 };

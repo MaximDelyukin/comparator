@@ -53,9 +53,13 @@ code {
   color: rgb(4, 81, 174);
 }
 
-.mainWrap {
+.mainContentWrap {
   display: flex;
   flex-direction: row;
+}
+
+.mainWrap > h1 {
+  color: rgb(4, 81, 174);
 }
 
 .badgesWrap {
