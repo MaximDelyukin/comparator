@@ -1,4 +1,4 @@
-export const productsMock = [
+const products = [
     {
         "Toepassing": "Voedsel en dranken",
         "salePrice": "1.41",
@@ -116,3 +116,7 @@ export const productsMock = [
         "atp": {}
     }
 ];
+
+export function getProducts() {
+    return products;
+}

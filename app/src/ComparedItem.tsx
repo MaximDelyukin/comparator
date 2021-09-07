@@ -7,10 +7,12 @@ interface IComparedItemProps {
 };
 
 export const ComparedItem = ({item, onSelectedItemChanged, isChecked }: IComparedItemProps) => {
-    return <div>
+    return <li>
+        <div>
             <label>
                 <input type='checkbox' onChange={(event: React.ChangeEvent<HTMLInputElement>) => { onSelectedItemChanged(item['sku'], event.currentTarget.checked) }} checked={isChecked} />
                 {item.name}
             </label>
-    </div>;
+        </div>
+    </li>;
 };

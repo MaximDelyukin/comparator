@@ -5,10 +5,10 @@ interface IFeaturesToCompareTitlesListProps {
 
 export const FeaturesToCompareTitlesList = ({ features, getClassName }: IFeaturesToCompareTitlesListProps) => {
     return <div>
-        <ul className="featuresTitlesList">
-            <li className="badges-title-wrap" key={'badges'}>Badges</li>
+        <ul className="featuresTitlesList" data-testid="featuresTitlesList">
+            <li className="badges-title-wrap" key={"badges"} data-testid="badges">Badges</li>
             {
-                features.map((feature: any) => (<li className={getClassName(feature)} key={feature}>{feature}</li>))
+                features.map((feature: any) => (<li className={getClassName(feature)} key={feature} data-testid={feature}>{feature}</li>))
             }
         </ul>
     </div>;

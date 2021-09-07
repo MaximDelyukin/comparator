@@ -2,16 +2,18 @@ import { useState } from 'react';
 import { ComparedItemsList } from './ComparedItemsList';
 import { DetailedItemsList } from './DetailedItemsList';
 import { FeaturesToCompareTitlesList } from './FeaturesToCompareTitlesList';
-import { productsMock } from "./ProductsMock";
+import { getProducts } from "./ProductsData";
 
-
+//TODO: move features to external module for better testability and less hardcode
 /*//TODO: add comment about useReducer instead of useState - but for this case for simplicity I used useState
 or useReducer */
 
 export const Main = () => {
-    const [detailedItems, setDetailedItems] = useState<any[]>(productsMock);
+    const products = getProducts();//mock
+    
+    const [detailedItems, setDetailedItems] = useState<any[]>(products);
     const [selectedItems, setSetSelectedItems] = useState<string[]>(() => {
-        return productsMock.map((product: any) => {
+        return products.map((product: any) => {
             return product['sku'];//TODO: specify identifier globally and import
         })
     });
@@ -98,10 +100,10 @@ export const Main = () => {
     const fieldsWhichAreDifferent = getFieldsWhichAreDifferent(getDetailedItemsList(detailedItems));
 
     const getClassNameForDetailedItemsList = (field: string): string => {
-        let res = '';
+        let res = 'markNoDifference';
         
         if (fieldsWhichAreDifferent.indexOf(field) !== -1) {
-            res = 'differenceHighLight';
+            res = 'markDifference';
         } 
     
         return res;

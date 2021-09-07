@@ -45,7 +45,7 @@ export const ProductItemDetails = ({ item, getClassName, onDeleteClick, sortedFe
             {sortedFeatures
             .filter( (feature: string) => (feature !== 'badges') )
             .map((feature: string) => {
-                return <div className={getClassName(feature)} key={feature}>
+                return <div className={getClassName(feature)} key={feature} data-testid={feature}>
                     {item[feature]}
                 </div>;
             })}

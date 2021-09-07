@@ -22,7 +22,7 @@ code {
   padding: 0;
 }
 
-.differenceHighLight {
+.markDifference {
   background-color: #ccc;
 }
 
@@ -37,6 +37,7 @@ code {
 
 .selectedItemsList {
   padding: 0;
+  list-style: none;
 }
 
 .featuresDetailedItemsListWrap {
