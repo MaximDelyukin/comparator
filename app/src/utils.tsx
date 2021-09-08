@@ -5,6 +5,7 @@ export const defaultImgSrc: string = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lv
 export const addDefaultSrc = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const noImgUrl = defaultImgSrc;
     e.currentTarget.src = noImgUrl;
+    e.currentTarget.alt = 'No image available';
 }
 
 export const CONSTANTS = {
@@ -21,4 +22,63 @@ export const CONSTANTS = {
         'Inwendige diameter',
         'Maat volgens AS568'
     ]
+};
+
+export const getSortedFeatures = (featureSource: string[]) => {
+    return featureSource.sort();
+};
+
+export const getFieldsWhichAreDifferent = (source: any[]) => {
+    let res: any[] = [];
+    if (source.length === 0) {
+        return res;
+    }
+
+    const sampleItem = source[0];
+
+    const fieldNames = Object.keys(sampleItem);
+
+    const groupedByFieldNameStore: any = {};
+
+    fieldNames.forEach((fieldName: string) => {
+        groupedByFieldNameStore[fieldName] = [];
+        return;
+    });
+    
+    source.forEach((product: any) => {
+        for (let i in product) {
+            if (product.hasOwnProperty(i)) {
+                groupedByFieldNameStore[i].push(product[i]);
+            }
+        };
+    } );
+
+    const storeOfDifferentFields: string[] = [];
+
+    const checkForDifference = (source: string[]) => {
+        const sample = source[0];
+        const res = source.filter((item: string) => {
+            return item !== sample;
+        } );
+
+        return res.length > 0;
+    }
+
+    for (let i in groupedByFieldNameStore) {
+        if (groupedByFieldNameStore.hasOwnProperty(i)) {
+            if (checkForDifference(groupedByFieldNameStore[i])) {
+                storeOfDifferentFields.push(i);
+            }
+        }
+    };
+
+    res = storeOfDifferentFields;
+    
+    return res;
+};
+
+export const getDetailedItemsList = (items: any[], selectedItems: any[]) => {
+    return items.filter((item: any) => {
+        return selectedItems.indexOf(item[CONSTANTS.ID_KEY]) !== -1;
+    } );
 };

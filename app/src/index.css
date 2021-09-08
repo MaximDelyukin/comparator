@@ -1,3 +1,9 @@
+:root {
+  --primaryBlue: rgb(4, 81, 174);
+  --secondaryBlue: rgb(73, 152, 251);
+  --markDifferenceHighlight: rgb(204, 204, 204);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,7 +19,6 @@ code {
     monospace;
 }
 
-
 .detailedItemsList {
   list-style: none;
   display: flex;
@@ -23,7 +28,8 @@ code {
 }
 
 .markDifference {
-  background-color: #ccc;
+  background-color: rgb(204, 204, 204);/*IE-11 fallback*/
+  background-color: var(--markDifferenceHighlight);
 }
 
 .featuresTitlesList {
@@ -51,6 +57,7 @@ code {
 
 .selectedItemsTitleWrap {
   color: rgb(4, 81, 174);
+  color: var(--primaryBlue);
 }
 
 .mainContentWrap {
@@ -60,6 +67,7 @@ code {
 
 .mainWrap > h1 {
   color: rgb(4, 81, 174);
+  color: var(--primaryBlue);
 }
 
 .badgesWrap {
@@ -108,7 +116,8 @@ code {
 }
 
 .productTitleWrap {
-  color:rgb(4, 81, 174);
+  color: rgb(4, 81, 174);
+  color: var(--primaryBlue);
 }
 
 .salePriceWrap {
@@ -128,4 +137,5 @@ code {
 
 .iconButtonDelete svg {
   fill: rgb(4, 81, 174);
+  fill: var(--primaryBlue);
 }
