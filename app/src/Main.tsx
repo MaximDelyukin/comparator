@@ -117,7 +117,7 @@ export const Main = () => {
         })
     };
 
-    return <div className="mainWrap">
+    return <main className="mainWrap">
         <h1>{detailedItems.length} products compared</h1>
         <div className="mainContentWrap">
             <div className="comparedItemsListWrap">
@@ -146,5 +146,5 @@ export const Main = () => {
                 </div>
             }
         </div>
-    </div>;
+    </main>;
 };
