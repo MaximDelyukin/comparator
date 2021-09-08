@@ -72,7 +72,7 @@ export const Main = () => {
     if (detailedItems.length > 1) {
         productsPhrase = 'products compared';
     }
-
+    
     return <main className="mainWrap">
         <h1>{detailedItems.length} {productsPhrase}</h1>
         <div className="mainContentWrap">
@@ -82,12 +82,14 @@ export const Main = () => {
                     onSelectedItemChanged={handleSelectedItemChanged}
                     isChecked={isSelectedItemChecked}
                 />
-                <div className="featuresToCompareTitlesListWrap">
-                    <FeaturesToCompareTitlesList
-                        getClassName={getClassNameForDetailedItemsList}
-                        features={getSortedFeatures(features)}
-                    />
-                </div>
+                {selectedItems.length > 0 &&
+                    <div className="featuresToCompareTitlesListWrap">
+                        <FeaturesToCompareTitlesList
+                            getClassName={getClassNameForDetailedItemsList}
+                            features={getSortedFeatures(features)}
+                        />
+                    </div>
+                }
             </div>
             {detailedItems.length > 0 && 
                 <div className="featuresDetailedItemsListWrap">
