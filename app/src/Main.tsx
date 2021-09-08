@@ -1,3 +1,4 @@
+import useFetch from 'use-http';
 import { useState } from 'react';
 import { ComparedItemsList } from './ComparedItemsList';
 import { DetailedItemsList } from './DetailedItemsList';
@@ -11,12 +12,13 @@ import {
 } from './utils';
 
 export const Main = () => {
-    const products = getProducts();
+    const { data: products, loading } = useFetch(CONSTANTS.PRODUCTS_API_URL, {}, []);
+    // const products = getProducts();
     const features = CONSTANTS.FEATURES;
 
-    const [detailedItems, setDetailedItems] = useState<any[]>(products);
+    const [detailedItems, setDetailedItems] = useState<any[]>([]);
     const [selectedItems, setSetSelectedItems] = useState<string[]>(() => {
-        return products.map((product: any) => {
+        return products?.map((product: any) => {
             return product[CONSTANTS.ID_KEY];
         })
     });
@@ -72,7 +74,13 @@ export const Main = () => {
     if (detailedItems.length > 1) {
         productsPhrase = 'products compared';
     }
-    
+
+    if (loading) {
+        return <div>
+            Loading
+        </div>;
+    }
+
     return <main className="mainWrap">
         <h1>{detailedItems.length} {productsPhrase}</h1>
         <div className="mainContentWrap">

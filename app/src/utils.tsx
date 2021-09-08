@@ -9,6 +9,7 @@ export const addDefaultSrc = (e: React.SyntheticEvent<HTMLImageElement, Event>) 
 }
 
 export const CONSTANTS = {
+    PRODUCTS_API_URL: 'https://5f993a3050d84900163b845a.mockapi.io/eriks/products/all',
     ID_KEY: 'sku',
     FEATURES: [
         'Toepassing',
