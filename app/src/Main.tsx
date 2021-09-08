@@ -62,8 +62,19 @@ export const Main = () => {
         })
     };
 
+    let productsPhrase;
+    if (detailedItems.length === 0) {
+        productsPhrase = 'products selected, please refresh the page';
+    }
+    if (detailedItems.length === 1) {
+        productsPhrase = 'product selected, please refresh the page';
+    }
+    if (detailedItems.length > 1) {
+        productsPhrase = 'products compared';
+    }
+
     return <main className="mainWrap">
-        <h1>{detailedItems.length} products compared</h1>
+        <h1>{detailedItems.length} {productsPhrase}</h1>
         <div className="mainContentWrap">
             <div className="comparedItemsListWrap">
                 <ComparedItemsList
