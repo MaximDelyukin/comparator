@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import useFetch from 'use-http';
+import { useState, useEffect } from 'react';
 import { ComparedItemsList } from './ComparedItemsList';
 import { DetailedItemsList } from './DetailedItemsList';
 import { FeaturesToCompareTitlesList } from './FeaturesToCompareTitlesList';
-import { getProducts } from "./ProductsData";
+import { Loader } from './Loader';
 import {
     CONSTANTS,
     getSortedFeatures,
@@ -11,27 +12,23 @@ import {
 } from './utils';
 
 export const Main = () => {
-    const products = getProducts();
-    const features = CONSTANTS.FEATURES;
-
-    const [detailedItems, setDetailedItems] = useState<any[]>(products);
-    const [selectedItems, setSetSelectedItems] = useState<string[]>(() => {
-        return products.map((product: any) => {
-            return product[CONSTANTS.ID_KEY];
-        })
-    });
-
-    const fieldsWhichAreDifferent = getFieldsWhichAreDifferent(getDetailedItemsList(detailedItems, selectedItems));
-
-    const getClassNameForDetailedItemsList = (field: string): string => {
-        let res = 'markNoDifference';
-        
-        if (fieldsWhichAreDifferent.indexOf(field) !== -1) {
-            res = 'markDifference';
-        } 
+    const { data, loading } = useFetch(CONSTANTS.PRODUCTS_API_URL, {}, []);
+    const [detailedItems, setDetailedItems] = useState<any[]>([]);
     
-        return res;
-    };
+    const features = CONSTANTS.FEATURES;
+    
+    const [selectedProductIds, setSetselectedProductIds] = useState<any[]>([]);
+
+    useEffect(() => {
+        if (data?.products) {
+            const productIds = data.products.map((product: any) => {
+                return product[CONSTANTS.ID_KEY];
+            });
+
+            setDetailedItems(data.products);
+            setSetselectedProductIds(productIds);
+        }
+    }, [data]);
 
     const handleDeleteClick = (id: string) => {
         setDetailedItems((prevDetailedItems: any[]) => {
@@ -42,23 +39,23 @@ export const Main = () => {
     };
 
     const isSelectedItemChecked = (id: string) => {
-        return selectedItems.indexOf(id) !== -1;
+        return selectedProductIds.indexOf(id) !== -1;
     };
 
     const handleSelectedItemChanged = (id: string, checked: boolean) => {
-        setSetSelectedItems((prevSelectedItems: string[]) => {
+        setSetselectedProductIds((prevSelectedProductIds: string[]) => {
             if (checked) {
-                const newSelectedItems = [...prevSelectedItems];
-                newSelectedItems.push(id);
+                const newSelectedProductIds = [...prevSelectedProductIds];
+                newSelectedProductIds.push(id);
 
-                return newSelectedItems;
+                return newSelectedProductIds;
             }
 
-            const newSelectedItems = [...prevSelectedItems];
-            const index = newSelectedItems.indexOf(id);
-            newSelectedItems.splice(index, 1);
+            const newSelectedProductIds = [...prevSelectedProductIds];
+            const index = newSelectedProductIds.indexOf(id);
+            newSelectedProductIds.splice(index, 1);
 
-            return newSelectedItems;
+            return newSelectedProductIds;
         })
     };
 
@@ -72,37 +69,58 @@ export const Main = () => {
     if (detailedItems.length > 1) {
         productsPhrase = 'products compared';
     }
+
+    if (loading) {
+        return <Loader />;
+    }
+
+    if (selectedProductIds) {
+        const fieldsWhichAreDifferent = getFieldsWhichAreDifferent(getDetailedItemsList(detailedItems, selectedProductIds));
+
+        const getClassNameForDetailedItemsList = (field: string): string => {
+            let res = 'markNoDifference';
+            
+            if (fieldsWhichAreDifferent.indexOf(field) !== -1) {
+                res = 'markDifference';
+            }
+        
+            return res;
+        };
     
-    return <main className="mainWrap">
-        <h1>{detailedItems.length} {productsPhrase}</h1>
-        <div className="mainContentWrap">
-            <div className="comparedItemsListWrap">
-                <ComparedItemsList
-                    items={detailedItems}
-                    onSelectedItemChanged={handleSelectedItemChanged}
-                    isChecked={isSelectedItemChecked}
-                />
-                {selectedItems.length > 0 &&
-                    <div className="featuresToCompareTitlesListWrap">
-                        <FeaturesToCompareTitlesList
-                            getClassName={getClassNameForDetailedItemsList}
-                            features={getSortedFeatures(features)}
-                        />
+
+        return <main className="mainWrap">
+            <h1>{detailedItems.length} {productsPhrase}</h1>
+            <div className="mainContentWrap">
+                <div className="comparedItemsListWrap">
+                    <ComparedItemsList
+                        items={detailedItems}
+                        onSelectedItemChanged={handleSelectedItemChanged}
+                        isChecked={isSelectedItemChecked}
+                    />
+                    {selectedProductIds.length > 0 &&
+                        <div className="featuresToCompareTitlesListWrap">
+                            <FeaturesToCompareTitlesList
+                                getClassName={getClassNameForDetailedItemsList}
+                                features={getSortedFeatures(features)}
+                            />
+                        </div>
+                    }
+                </div>
+                {detailedItems.length > 0 &&
+                    <div className="featuresDetailedItemsListWrap">
+                        <div>
+                            <DetailedItemsList
+                                items={getDetailedItemsList(detailedItems, selectedProductIds)}
+                                sortedFeatures={getSortedFeatures(features)}
+                                getClassName={getClassNameForDetailedItemsList}
+                                onDeleteClick={handleDeleteClick}
+                            />
+                        </div>
                     </div>
                 }
             </div>
-            {detailedItems.length > 0 && 
-                <div className="featuresDetailedItemsListWrap">
-                    <div>
-                        <DetailedItemsList
-                            items={getDetailedItemsList(detailedItems, selectedItems)}
-                            sortedFeatures={getSortedFeatures(features)}
-                            getClassName={getClassNameForDetailedItemsList}
-                            onDeleteClick={handleDeleteClick}
-                        />
-                    </div>
-                </div>
-            }
-        </div>
-    </main>;
+        </main>;
+    }
+
+    return <div>Something went wrong</div>;
 };

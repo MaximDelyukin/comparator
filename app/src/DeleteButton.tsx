@@ -13,7 +13,7 @@ interface IDeleteButtonProps {
 export const DeleteButton = ({ onDeleteClick, children }: IDeleteButtonProps) => {
     return <button
         onClick={(_event: React.MouseEvent) => { onDeleteClick() }}
-        title="delete"
+        title="Remove Product"
         className="iconButtonDelete buttonDelete"
     >
         {deleteIconSvg}
