@@ -1,14 +1,10 @@
-jest.mock('./ProductsData', () => ({
-    getProducts: jest.fn(() => defaultProducts)
-}));
-
 import React from 'react';
 import user from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import App from './App';
-import { getProducts } from "./ProductsData";
-
-const mockGetProducts = getProducts as jest.MockedFunction<typeof getProducts>;
+import { CONSTANTS } from './utils';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 const defaultProducts = [
     {
@@ -148,7 +144,7 @@ const productsWithOneDifferentFeature = [
         "BUP_Conversion": "",
         "minQuantity": "5",
         "manufacturerImage": "",
-        "name": "O-ring EPDM 70 shore - Voedsel (Binnen Ø=1.78 Snoer Ø=1.78; AS568- 004)",
+        "name": "O-ring EPDM 70 shore - Voedsel (Binnen Ø=2.9 Snoer Ø=1.78; AS568- 006)",
         "Materiaal": "EPDM",
         "sku": "11545A",
         "Snoerdikte": "1.78",
@@ -161,100 +157,80 @@ const productsWithOneDifferentFeature = [
     }
 ];
 
-test('allows user to view list of products selected for comparison', () => {
-    mockGetProducts.mockReturnValueOnce(defaultProducts);
+const productsUrl = CONSTANTS.PRODUCTS_API_URL;
+const server = setupServer(
+    rest.get(`${productsUrl}`, (req, res, ctx) => {
+        return res(ctx.json({products: productsWithOneDifferentFeature}));
+    })
+);
+
+beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+afterAll(() => server.close());
+afterEach(() => server.resetHandlers());
+
+
+test.only('allows user to view list of products selected for comparison', async () => {
     render(<App />);
-    const productsDetailsContainer = document.querySelector('.featuresDetailedItemsListWrap');
-
-    expect(productsDetailsContainer).toBeInTheDocument();
-
-    const productItemDetails = productsDetailsContainer?.querySelector('.productDetailsItem');
+    const productName = productsWithOneDifferentFeature[0]['name'];
+    const productItemDetails = await screen.findByText(productName, { selector: '.productTitleWrap b' });
 
     expect(productItemDetails).toBeVisible();
 });
 
-test('allows user to toggle visibility of selected products', () => {
-    mockGetProducts.mockReturnValueOnce(defaultProducts);
+test.only('allows user to toggle visibility of selected products', async () => {
     render(<App />);
+    const productName = productsWithOneDifferentFeature[0]['name'];
+    const checkbox = await screen.findByLabelText(productName);
 
-    const visibleProductsTogglerContainer = document.querySelector('.comparedItemsListWrap');
-
-    expect(visibleProductsTogglerContainer).toBeInTheDocument();
-
-    const checkBox = visibleProductsTogglerContainer?.querySelector('input[type=checkbox]');
-
-    expect(checkBox).toBeInTheDocument();
+    expect(checkbox).toBeVisible();
 });
 
-test('allows user to delete products available for comparison', () => {
-    mockGetProducts.mockReturnValueOnce(defaultProducts);
+test.only('allows user to delete products available for comparison', async () => {
     render(<App />);
 
-    const productsDetailsContainer = document.querySelector('.featuresDetailedItemsListWrap');
+    const deleteButton: any = await screen.findAllByTitle('Remove Product');
 
-    expect(productsDetailsContainer).toBeInTheDocument();
-
-    const productItemDetails = productsDetailsContainer?.querySelector('.productDetailsItem');
-
-    expect(productItemDetails).toBeInTheDocument(); 
-
-    const deleteButton = productsDetailsContainer?.querySelector('.buttonDelete');
-
-    expect(deleteButton).toBeInTheDocument();
+    expect(deleteButton[0]).toBeVisible();
 });
 
-test('the amount of product titles with checkboxes should match the amount of visible products', () => {
-    mockGetProducts.mockReturnValueOnce(defaultProducts);
+test.only('the amount of product titles with checkboxes should match the amount of visible products', async () => {
     render(<App />);
 
-    const visibleProductsTogglerContainer = document.querySelector('.comparedItemsListWrap');
+    const productNameFragment = /O-ring EPDM 70 shore/i;
+    const checkBoxes = await screen.findAllByLabelText(productNameFragment, {selector: 'input[type=checkbox]'});
+    const productItemDetails = await screen.findAllByText(productNameFragment, {selector: '.productDetailsItem .productTitleWrap b'});
 
-    expect(visibleProductsTogglerContainer).toBeInTheDocument();
-
-    const checkBoxes = visibleProductsTogglerContainer?.querySelectorAll('input[type=checkbox]');
-
-    const productsDetailsContainer = document.querySelector('.featuresDetailedItemsListWrap');
-
-    expect(productsDetailsContainer).toBeInTheDocument();
-
-    const productItemDetails = productsDetailsContainer?.querySelectorAll('.productDetailsItem');
-
-    const amountOfCheckBoxes = checkBoxes?.length;
-    const amountOfProductItemDetails = productItemDetails?.length;
+    const amountOfCheckBoxes = checkBoxes.length;
+    const amountOfProductItemDetails = productItemDetails.length;
 
     expect(amountOfCheckBoxes).toEqual(amountOfProductItemDetails);
 
 });
 
-test('toggling checkboxes should toggle the amount of product items visible for comparison', () => {
-    mockGetProducts.mockReturnValueOnce(defaultProducts);
+test.only('toggling checkboxes should toggle the amount of product items visible for comparison', async () => {
     render(<App />);
 
-    const visibleProductsTogglerContainer = document.querySelector('.comparedItemsListWrap');
+    const productNameFragment = /O-ring EPDM 70 shore/i;
+    const checkBoxes = await screen.findAllByLabelText(productNameFragment, {selector: 'input[type=checkbox]'});
 
-    const checkBox = visibleProductsTogglerContainer!.querySelector('input[type=checkbox]');
+    const visibleProductsBeforeUserClicksCheckbox = await screen.findAllByText(productNameFragment, {selector: '.productDetailsItem .productTitleWrap b'});
+    const visibleProductsBeforeUserClicksCheckboxAmount = visibleProductsBeforeUserClicksCheckbox.length;
 
-    const productsDetailsContainer = document.querySelector('.featuresDetailedItemsListWrap');
+    user.click(checkBoxes[0]);
 
-    const visibleProductsBeforeUserClicksCheckbox = productsDetailsContainer?.querySelectorAll('.productDetailsItem');
-    const visibleProductsBeforeUserClicksCheckboxAmount = visibleProductsBeforeUserClicksCheckbox!.length;
-
-    user.click(checkBox!);
-
-    const visibleProductsAfterFirstCheckboxClick = productsDetailsContainer?.querySelectorAll('.productDetailsItem');
-    const visibleProductsAfterFirstCheckboxClickAmount = visibleProductsAfterFirstCheckboxClick?.length;
+    const visibleProductsAfterFirstCheckboxClick =  await screen.findAllByText(productNameFragment, {selector: '.productDetailsItem .productTitleWrap b'});
+    const visibleProductsAfterFirstCheckboxClickAmount = visibleProductsAfterFirstCheckboxClick.length;
 
     expect(visibleProductsAfterFirstCheckboxClickAmount).toBeLessThan(visibleProductsBeforeUserClicksCheckboxAmount);
 
-    user.click(checkBox!);
+    user.click(checkBoxes[0]);
 
-    const visibleProductsAfterSecondCheckboxClick = productsDetailsContainer?.querySelectorAll('.productDetailsItem');
-    const visibleProductsAfterSecondCheckboxClickAmount = visibleProductsAfterSecondCheckboxClick!.length;
+    const visibleProductsAfterSecondCheckboxClick = await screen.findAllByText(productNameFragment, {selector: '.productDetailsItem .productTitleWrap b'});
+    const visibleProductsAfterSecondCheckboxClickAmount = visibleProductsAfterSecondCheckboxClick.length;
     expect(visibleProductsAfterSecondCheckboxClickAmount).toEqual(visibleProductsBeforeUserClicksCheckboxAmount);
 });
 
 test('user should see highlighted cells with features which are different among the products', () => {
-    mockGetProducts.mockReturnValueOnce(productsWithOneDifferentFeature);
     render(<App />);
 
     const differentFeature = 'Inwendige diameter';
@@ -266,7 +242,6 @@ test('user should see highlighted cells with features which are different among 
 });
 
 test('user should see no highlighted cells of the features which are the same among the products', () => {
-    mockGetProducts.mockReturnValueOnce(defaultProducts);
     render(<App />);
 
     const sameFeature = 'Hardheid';
@@ -278,7 +253,6 @@ test('user should see no highlighted cells of the features which are the same am
 });
 
 test('integration', () => {
-    mockGetProducts.mockReturnValueOnce(defaultProducts);
     render(<App />);
 
     const visibleProductsTogglerContainer = document.querySelector('.comparedItemsListWrap');
